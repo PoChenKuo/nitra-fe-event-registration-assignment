@@ -5,6 +5,7 @@ export const fontSize = {
   lg: ['var(--font-size-lg)', 'var(--line-height-lg)'],
   md: ['var(--font-size-md)', 'var(--line-height-md)'],
   sm: ['var(--font-size-sm)', 'var(--line-height-sm)'],
+  xs: ['var(--font-size-xs)', 'var(--line-height-xs)'],
 }
 
 export const fontWeight = {
@@ -18,6 +19,7 @@ export const lineHeight = {
   lg: 'var(--line-height-lg)',
   md: 'var(--line-height-md)',
   sm: 'var(--line-height-sm)',
+  xs: 'var(--line-height-xs)',
 }
 
 export const letterSpacing = {
