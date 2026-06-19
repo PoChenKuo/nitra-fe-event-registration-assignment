@@ -16,14 +16,33 @@ export function provideWizard() {
   const isFirst = computed(() => currentStep.value === 1)
   const isLast = computed(() => currentStep.value === steps.length)
 
+  // Last navigation direction — drives the direction-aware page transition.
+  const direction = ref('forward') // 'forward' | 'backward'
+
+  // Step ids that currently have validation errors. Populated by the review/
+  // validation step (later task); drives the stepper's error state.
+  const errorSteps = ref(new Set())
+  function setStepErrors(ids) {
+    errorSteps.value = new Set(ids)
+  }
+  function clearStepErrors() {
+    errorSteps.value = new Set()
+  }
+
   function goToStep(n) {
-    if (n >= 1 && n <= steps.length) currentStep.value = n
+    if (n < 1 || n > steps.length || n === currentStep.value) return
+    direction.value = n > currentStep.value ? 'forward' : 'backward'
+    currentStep.value = n
   }
   function goNext() {
-    if (!isLast.value) currentStep.value += 1
+    if (isLast.value) return
+    direction.value = 'forward'
+    currentStep.value += 1
   }
   function goBack() {
-    if (!isFirst.value) currentStep.value -= 1
+    if (isFirst.value) return
+    direction.value = 'backward'
+    currentStep.value -= 1
   }
 
   const wizard = {
@@ -33,6 +52,10 @@ export function provideWizard() {
     currentMeta,
     isFirst,
     isLast,
+    direction,
+    errorSteps,
+    setStepErrors,
+    clearStepErrors,
     goToStep,
     goNext,
     goBack,

@@ -109,15 +109,16 @@ https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Co
 - **Token-first styling:** used semantic shortcuts (`bg-brand-emphasis-rest`, `text-h4`, `bg-surface-l0`, accent button via `--q-accent`); no hardcoded hex.
 - **Event name** pulled from `mocks/event.js` (`WebDev Summit 2028`) rather than the Figma sample text (`2025`) — data-driven is correct.
 - **Stepper kept as a stub** to respect the Task 1/Task 2 split; Task 2 owns active/completed/inactive states + responsive.
+- **Page transition:** direction-aware `<transition mode="out-in">` on the content area (keyed on `currentStep`) — forward/backward slide+fade, with `useWizard.direction` driving the name and a `prefers-reduced-motion` fallback. CSS lives in `app.scss`.
 - **Verification:** `yarn build` succeeds.
 
 
 ## Tasks 2 - build stepper
 ### Status
 #### Done
-false
-#### Pending
 true
+#### Pending
+false
 #### Deprecated
 false
 ### Description
@@ -127,6 +128,27 @@ https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Co
 https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1076-904&m=dev
 
 ### Result / Decision
+
+**Figma sources:** stepper states across 3 frames — `1099:1001` (step 1 active), `1101:1047` (steps completed + last active), `1076:904` (Review page showing a step in error). Container `px-120 py-24` (→ 80px), circles 32px, labels 13px, connectors `flex-1 h-2 px-16`.
+
+#### Implemented — `src/components/WizardStepper.vue` (replaces Task 1 placeholder)
+Four per-step states resolved by `stateOf(stepId)` (error has priority):
+- **active** (`id === currentStep`): `bg-brand-emphasis-rest` circle + white number, label `text-neutral` semibold.
+- **completed** (`id < currentStep`): `bg-brand-emphasis-rest` circle + white `check` icon, label `text-neutral` medium.
+- **inactive** (`id > currentStep`): `bg-surface-l2` circle + `text-neutral-quiet` number, label `text-neutral-quiet` regular.
+- **error** (`id ∈ errorSteps`): `bg-danger-emphasis-rest` circle + white `priority_high` icon, label `text-danger`.
+- Connector after step `i`: `bg-brand-emphasis-rest` when `i < currentStep`, else `bg-surface-l2`.
+- Steps are clickable (`goToStep`); `aria-current="step"` on the active one.
+
+#### State wiring — `src/composables/useWizard.js`
+- Added `errorSteps` (reactive `Set`) + `setStepErrors(ids)` / `clearStepErrors()`. The validation/review task populates it; the stepper consumes it. Decouples the error visual from the validation logic.
+
+#### Decisions
+- **Markup:** semantic `<ol>/<li>` progress list; each step is a `role="button"` `<div>` (not a `<button>`) so the label inherits the app font instead of the UA button font, and no button reset / focus-padding leaks in. Keyboard (Enter/Space) + `aria-current="step"` preserved. Connector matches Figma's flex layout exactly (`flex-1` wrapper with `px-16`, inner `flex-1 h-2 rounded-1` line).
+- **Icons** via Quasar material-icons (`check`, `priority_high`) instead of importing the Figma swatch images — lighter, themeable, matches the "no raw assets" preference.
+- **13px label** kept as literal (`text-[13px]`) — design uses 13px and there is no 13px type token; this is a size, not a color, so the no-hardcoded-hex rule is unaffected.
+- **Re-verified** against all three Figma demo frames (active / completed+active / error) — circles, labels, connectors, and colors match.
+- **Verification:** `yarn build` succeeds.
 
 
 ## Tasks 3 - build page Attendee Information

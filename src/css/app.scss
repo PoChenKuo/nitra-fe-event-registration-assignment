@@ -1,2 +1,39 @@
 @import 'src/css/colors.scss';
 @import 'src/css/typography.scss';
+
+/* Direction-aware wizard step transition (used with <transition mode="out-in">) */
+.step-slide-next-enter-active,
+.step-slide-next-leave-active,
+.step-slide-prev-enter-active,
+.step-slide-prev-leave-active {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.step-slide-next-enter-from {
+  opacity: 0;
+  transform: translateX(24px);
+}
+.step-slide-next-leave-to {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+
+.step-slide-prev-enter-from {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+.step-slide-prev-leave-to {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .step-slide-next-enter-active,
+  .step-slide-next-leave-active,
+  .step-slide-prev-enter-active,
+  .step-slide-prev-leave-active {
+    transition: opacity 0.15s ease;
+    transform: none !important;
+  }
+}
