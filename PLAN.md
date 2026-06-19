@@ -42,3 +42,102 @@ Check and syncronize the styles from my duplicated draft(url: http://127.0.0.1:3
 
 **Completeness:** every color token shown in the Figma reference frame has a corresponding local definition — no missing tokens.
 
+# System Design
+## Content Definition
+### header
+The icon with event title("WebDev Summit 2025").
+### stepper
+The quasar stepper that corresponds to the current page number over 4 pages.
+### mainContent(4 pages)
+#### Attendee Information
+1. A single-only Ticket Selector(carousel when screen width small than 1280px).
+2. Information form - use quasar form input fields with conditional status 
+#### Select Sessions
+1. Date switcher
+2. Hint for selected sessions
+3. Session cards
+#### Select Add-ons
+1. Add-on type switcher
+2. Hint for switcher types
+3. Item cards
+4. Order Summary displayer
+#### Review Your Registration
+1. Independently summarys for each page's order.
+2. Error hint for details.
+### footer
+## Storage
+Page holds states as provider for each page.
+#### Attendee Information
+Inject attendee information, ticket type, and hasMerchandise bool flag.
+#### Select Sessions
+Inject sessions selection states.
+#### Select Add-ons
+Inject Add-ons and selected ticket info.
+#### Review Your Registration
+Inject all data that presents in other pages for form check.
+
+
+## Tasks 1 - build main layout
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Reference the example to build header, stepper area, main content area, and footer area.
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1069-968&m=dev
+### Result / Decision
+
+**Figma source:** frame `Step 1 — Attendee Info` (node `1069:968`). Layout regions: Header (72px) / divider / Stepper (80px) / divider / Content / divider / Action Bar (72px), all on a 1440px canvas.
+
+#### Files added
+- `src/layouts/MainLayout.vue` — `q-layout` shell (`view="hHh lpR fFf"`): fixed `q-header` (AppHeader + dividers + WizardStepper), `q-page-container` with `router-view`, fixed `q-footer` (WizardFooter). Calls `provideWizard()`.
+- `src/composables/useWizard.js` — provide/inject wizard state (`currentStep`, `currentMeta`, `isFirst/isLast`, `goNext/goBack/goToStep`); the shared store the System Design calls for.
+- `src/constants/steps.js` — the 4-step config (`label` + `nextLabel`), single source of truth.
+- `src/components/AppHeader.vue` — header: brand emblem in a 40px `bg-brand-emphasis-rest` tile + event name (`text-h4`), data-driven from `mocks/event.js`.
+- `src/components/BrandEmblem.vue` — Nitra brandmark SVG (from Figma `1116:1005`), `currentColor` fill.
+- `src/components/WizardFooter.vue` — action bar: Back (`flat`, hidden on step 1) + primary Next (`color="accent"` → `#FB7429`), label from `currentMeta.nextLabel`.
+- `src/components/WizardStepper.vue` — **placeholder** functional stepper (reflects/navigates steps); full Figma states are Task 2.
+
+#### Files changed
+- `src/router/routes.js` — `/` now renders `MainLayout` with `IndexPage` as child route.
+- `src/pages/IndexPage.vue` — content-area placeholder driven by `useWizard()`; real step pages are Tasks 3+.
+
+#### Decisions
+- **Token-first styling:** used semantic shortcuts (`bg-brand-emphasis-rest`, `text-h4`, `bg-surface-l0`, accent button via `--q-accent`); no hardcoded hex.
+- **Event name** pulled from `mocks/event.js` (`WebDev Summit 2028`) rather than the Figma sample text (`2025`) — data-driven is correct.
+- **Stepper kept as a stub** to respect the Task 1/Task 2 split; Task 2 owns active/completed/inactive states + responsive.
+- **Verification:** `yarn build` succeeds.
+
+
+## Tasks 2 - build stepper
+### Status
+#### Done
+false
+#### Pending
+true
+#### Deprecated
+false
+### Description
+Reference the example and status to build stepper component.
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1099-1001&m=dev
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1101-1047&m=dev
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1076-904&m=dev
+
+### Result / Decision
+
+
+## Tasks 3 - build page Attendee Information
+### Status
+#### Done
+false
+#### Pending
+true
+#### Deprecated
+false
+### Description
+Reference the example to build main page Attendee Information.
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1070-932&m=dev
+### Result / Decision
