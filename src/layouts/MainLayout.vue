@@ -1,11 +1,14 @@
 <script setup>
 import { provideWizard } from '../composables/useWizard.js'
+import { provideRegistration } from '../composables/useRegistration.js'
 import AppHeader from '../components/AppHeader.vue'
 import WizardStepper from '../components/WizardStepper.vue'
 import WizardFooter from '../components/WizardFooter.vue'
 
-// Owns the wizard navigation state for the whole shell.
+// Owns the wizard navigation state and the registration data store for the
+// whole shell, so step pages can mount/unmount without losing state.
 provideWizard()
+provideRegistration()
 </script>
 
 <template>

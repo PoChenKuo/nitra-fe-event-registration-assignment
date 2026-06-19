@@ -154,12 +154,39 @@ Four per-step states resolved by `stateOf(stepId)` (error has priority):
 ## Tasks 3 - build page Attendee Information
 ### Status
 #### Done
-false
-#### Pending
 true
+#### Pending
+false
 #### Deprecated
 false
 ### Description
+With mock data - src\mocks\event.js
 Reference the example to build main page Attendee Information.
 https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1070-932&m=dev
 ### Result / Decision
+
+**Figma source:** `Content` frame `1070:932` — Ticket Type selector (`1070:958`) + Attendee form (`1070:934`). Cards `p-20 rounded-6 gap-12` with `0 4px 16px / 0 1px 3px` shadow; inputs `px-12 py-10 rounded-6`.
+
+#### State store — `src/composables/useRegistration.js` (provided in `MainLayout`)
+Central reactive store (the System Design "Storage"): `attendee` (6 fields), `ticketTypeId`, `selectedAddons` (filled by the Add-ons step later), and `hasMerchandise` computed. Provided once so step pages can unmount without losing data and Review can read everything.
+
+#### Components added
+- `TicketCard.vue` — single ticket; unselected `bg-surface-l1` + 1px `border-neutral-muted`, selected `bg-brand-muted-rest` + 2px `border-brand-emphasis` + green `✓ Selected` badge (`bg-success-bold-rest`). Perks use `check_circle`. `role="button"` + keyboard.
+- `TicketSelector.vue` — single-select; **equal-height row ≥1280px, scroll-snap carousel <1280px** (`useMediaQuery('(max-width: 1279px)')`).
+- `FormField.vue` — label (`text-sm` medium) + Quasar `q-input` (outlined, dense), `v-model` passthrough.
+- `AttendeeForm.vue` — `q-form` responsive grid (`grid-cols-1 sm:grid-cols-2`); Job Title + Shipping span full width. Shipping label flips to required-style ("Shipping Address" vs "(Optional)") via `hasMerchandise`. No inline validation (runs at Review per spec).
+- `pages/steps/AttendeeInfoStep.vue` + `StepPlaceholder.vue` (steps 2–4).
+
+#### Wiring
+- `IndexPage.vue` now maps `currentStep → component` (step 1 = AttendeeInfoStep, else placeholder), inside the keyed transition.
+- `MainLayout.vue` calls `provideRegistration()` alongside `provideWizard()`.
+- `app.scss` — scoped `.attendee-input` tweaks so `q-input` matches Figma (6px radius, neutral-muted border, brand focus, 16px text).
+
+#### Decisions
+- **Carousel:** native scroll-snap (`snap-x snap-mandatory`, `snap-center`, `scroll-smooth`) over `q-carousel` — cards have variable heights (VIP tallest) which `q-carousel`'s fixed height can't handle. Figma has **no narrow/mobile frame** (every frame is 1440px), so the <1280px layout is a responsive addition with no Figma reference to violate.
+- **Conditional shipping field** built strictly from Figma `Shipping Address — Conditional States` (`1203:587`): optional → `(Optional)` + `border-neutral-muted`; merchandise → `*` + `border-neutral-emphasis`; merchandise+empty(after submit) → red label + `border-danger-emphasis` + "required for merchandise orders". Gated by `attemptedSubmit` so nothing reddens pre-submit. `FormField` now takes `required` / `error` / `errorMessage`.
+- **Input chrome:** `q-input` tuned to the Figma spec — 44px height, 6px radius, 16px text, `text-neutral-quiet` placeholder, brand focus ring; error border via Quasar `:error` (`--q-negative` = `#c71a1a`).
+- **Heading** "Attendee Information" verified `text-h3` (24/28 bold) from `1070:933`.
+- **Perk icon:** Quasar `check_circle` instead of the Figma duotone image — themeable, no raw asset.
+- **Token-first**, no hardcoded hex (shadow is a black-alpha effect, not a color token).
+- **Verification:** `yarn build` succeeds; key utilities (card shadow, snap, responsive grid, brand tokens) confirmed in generated CSS.

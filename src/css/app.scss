@@ -1,6 +1,41 @@
 @import 'src/css/colors.scss';
 @import 'src/css/typography.scss';
 
+/* Attendee form inputs — align Quasar's outlined q-input with the Figma spec
+   (44px height, 6px radius, conditional border colours, 16px text). */
+.attendee-input.q-field--outlined .q-field__control {
+  border-radius: 6px;
+  min-height: 44px;
+  height: 44px;
+  padding: 0 12px;
+
+  &:before {
+    border-color: var(--border-neutral-muted);
+  }
+  &:hover:before {
+    border-color: var(--border-neutral-emphasis);
+  }
+}
+/* Required (merchandise selected, no error): emphasised neutral border */
+.attendee-input--required.q-field--outlined .q-field__control:before {
+  border-color: var(--border-neutral-emphasis);
+}
+/* Focus ring uses the brand colour */
+.attendee-input.q-field--outlined.q-field--focused .q-field__control:after {
+  border-color: var(--border-brand-emphasis);
+}
+.attendee-input .q-field__native {
+  font-size: var(--font-size-lg); /* 16px */
+  color: var(--text-neutral-default);
+}
+.attendee-input .q-field__native::placeholder {
+  color: var(--text-neutral-quiet);
+}
+/* Error helper text: 11px, danger colour (Quasar already uses --q-negative) */
+.attendee-input .q-field__messages {
+  font-size: var(--font-size-xs);
+}
+
 /* Direction-aware wizard step transition (used with <transition mode="out-in">) */
 .step-slide-next-enter-active,
 .step-slide-next-leave-active,
