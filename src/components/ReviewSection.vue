@@ -20,7 +20,7 @@ const { goToStep } = useWizard()
     "
   >
     <div class="flex items-center justify-between w-full">
-      <h3 class="text-subtitle1" :class="error ? 'text-danger' : 'text-neutral'">{{ title }}</h3>
+      <h3 class="text-subtitle1 mt-0 mb-0" :class="error ? 'text-danger' : 'text-neutral'">{{ title }}</h3>
       <span
         role="button"
         tabindex="0"

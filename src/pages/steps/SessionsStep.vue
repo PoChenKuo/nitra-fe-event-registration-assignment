@@ -33,7 +33,7 @@ const hint = computed(() => {
 
 <template>
   <section class="flex flex-col gap-[24px]">
-    <h2 class="text-h3 text-neutral">Select Sessions</h2>
+    <h2 class="text-h3 text-neutral mt-0 mb-0">Select Sessions</h2>
 
     <div class="flex flex-col gap-[16px]">
       <SegmentedTabs v-model="activeDate" :items="dates" />

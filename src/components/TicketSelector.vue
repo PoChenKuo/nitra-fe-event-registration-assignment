@@ -17,7 +17,7 @@ function select(id) {
 
 <template>
   <section class="flex flex-col gap-[16px]">
-    <h3 class="text-subtitle1 text-neutral">Select Ticket Type</h3>
+    <h3 class="text-subtitle1 text-neutral mt-0 mb-0">Select Ticket Type</h3>
 
     <!-- Wide: equal-height row. `content-start` keeps the (single) flex line
          packed to the top so stretched cards don't gain stray bottom space. -->

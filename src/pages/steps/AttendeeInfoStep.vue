@@ -8,7 +8,7 @@ import AttendeeForm from '../../components/AttendeeForm.vue'
     <TicketSelector />
 
     <section class="flex flex-col gap-[32px]">
-      <h2 class="text-h3 text-neutral">Attendee Information</h2>
+      <h2 class="text-h3 text-neutral mt-0 mb-0">Attendee Information</h2>
       <AttendeeForm />
     </section>
   </div>

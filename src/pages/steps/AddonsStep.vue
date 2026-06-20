@@ -58,7 +58,7 @@ const showBanner = computed(() => reg.hasMerchandise.value)
 
 <template>
   <section class="flex flex-col gap-[24px]">
-    <h2 class="text-h3 text-neutral">Select Add-ons</h2>
+    <h2 class="text-h3 text-neutral mt-0 mb-0">Select Add-ons</h2>
 
     <div class="flex flex-col lg:flex-row gap-[32px] items-start">
       <!-- List column -->

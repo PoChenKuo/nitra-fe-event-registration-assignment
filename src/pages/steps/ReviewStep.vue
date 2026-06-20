@@ -83,7 +83,7 @@ const addonRows = computed(() => {
 
 <template>
   <section class="flex flex-col gap-[24px]">
-    <h2 class="text-h3 text-neutral">Review Your Registration</h2>
+    <h2 class="text-h3 text-neutral mt-0 mb-0">Review Your Registration</h2>
 
     <ErrorBanner v-if="showErrors && errorList.length" :errors="errorList" />
 
@@ -117,7 +117,7 @@ const addonRows = computed(() => {
 
     <!-- Pricing Summary -->
     <div class="flex flex-col gap-[12px] p-[20px] rounded-[6px] bg-surface-l1 border border-neutral-muted">
-      <h3 class="text-subtitle1 text-neutral">Pricing Summary</h3>
+      <h3 class="text-subtitle1 text-neutral mt-0 mb-0">Pricing Summary</h3>
       <div class="flex justify-between w-full text-sm text-neutral-muted">
         <span>{{ ticket ? `${ticket.name} Ticket` : 'No ticket selected' }}</span>
         <span class="shrink-0 pl-[12px]">{{ ticket ? formatCurrency(ticket.price) : '—' }}</span>

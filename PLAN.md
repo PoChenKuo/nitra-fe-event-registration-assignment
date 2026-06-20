@@ -553,5 +553,32 @@ Refactor the Edit button in ReviewSection from a `<button>` tag to a custom styl
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 14 - Remove H1 H2 H3 margins via mt-0 mb-0 classes
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+In multiple pages, native `h1`, `h2`, and `h3` heading elements had default top and bottom margins. These margins should be cleared to 0 by applying `mt-0 mb-0` utility classes, without adding or modifying any global CSS files.
 
+### Result / Decision
 
+#### Implementation — Heading Margin Fixes
+We identified all native Heading tags inside the Vue templates and ensured they explicitly declare `mt-0 mb-0` utility classes to zero out margins:
+
+- **src/components/OrderSummary.vue**: Updated `h3` class list to include `mb-0` (`mt-0 mb-0`).
+- **src/components/ReviewSection.vue**: Updated `h3` class list to include `mb-0` (`mt-0 mb-0`).
+- **src/components/TicketSelector.vue**: Added both `mt-0` and `mb-0` to the `h3` class list.
+- **src/pages/steps/AddonsStep.vue**: Updated `h2` class list to include `mb-0` (`mt-0 mb-0`).
+- **src/pages/steps/AttendeeInfoStep.vue**: Updated `h2` class list to include `mb-0` (`mt-0 mb-0`).
+- **src/pages/steps/ReviewStep.vue**: Updated both `h2` (Review Title) and `h3` (Pricing Summary) class lists to include `mb-0` (`mt-0 mb-0`).
+- **src/pages/steps/SessionsStep.vue**: Updated `h2` class list to include `mb-0` (`mt-0 mb-0`).
+
+#### Decisions
+- Direct inclusion of `mt-0 mb-0` in Vue templates was preferred over modifying CSS files or `uno.config.js` to strictly follow the "no new global CSS" constraint.
+- This ensures all heading tags maintain layout stability and align exactly with the layout gap specifications without being polluted by browser or Quasar default margins.
+
+**Verification:** Verified via `grep` that all `h1`-`h6` occurrences inside the workspace templates now correctly utilize the `mt-0 mb-0` utilities.

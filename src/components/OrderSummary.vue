@@ -7,7 +7,7 @@ const { ticket, lines, workshopDiscount, total } = useOrderSummary()
 
 <template>
   <aside class="flex flex-col gap-[16px] p-[24px] rounded-[6px] bg-surface-l1 border border-neutral-muted">
-    <h3 class="text-subtitle1 text-neutral">Order Summary</h3>
+    <h3 class="text-subtitle1 text-neutral mt-0 mb-0">Order Summary</h3>
 
     <!-- Ticket is always shown as the anchor row -->
     <div
