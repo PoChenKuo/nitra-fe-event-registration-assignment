@@ -329,3 +329,44 @@ Unified, reactive, evaluated on Review:
 - **Review add-on/ticket values** use whole-dollar `($149)` per Figma; the Pricing Summary uses `$X,XXX.XX`.
 - **Global `button { font-family: inherit }`** so the text `Edit` link (a real `<button>`) matches the app font.
 - **Verification:** `yarn build` succeeds; danger/success tokens + `text-h2` confirmed in generated CSS.
+
+
+
+## Tasks 7 - Card type solid border fix
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Currently components:
+Ticket card
+AddonCard
+MerchCard
+SessionCard
+
+For the card types, they do not set border width and style, and please set the box-sizing - content-box for cards to prevent page shaking when selecting status change.
+
+Reference object:
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1172-625&m=dev
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1172-609&m=dev
+### Result / Decision
+
+#### Root cause (verified in the built CSS)
+- `border-2` is **not a generated utility** in this UnoCSS config (no `border-width:2px` anywhere). With a global `border-style: solid` (preflight) and no `border-width:0` reset, selected cards using `border-2` fell back to the browser default `medium` (~3px). So selecting flipped the border `1px → ~3px`, changing the card's box size → layout shake.
+- `box-sizing: border-box` is already applied globally by Quasar.
+
+#### Fix — 1px-margin compensation (keeps Figma's 1px-unselected / 2px-selected look, no shake)
+All cards declare `border-solid` in the base class. State classes then keep the **total outer offset constant** at 2px per side:
+- **Selected**: `border-[2px]` + no margin (note: `border-2` is replaced with the arbitrary `border-[2px]`, which actually generates `border-width:2px`).
+- **Unselected / disabled / full**: `border` (1px) + `m-[1px]` (1px margin).
+
+Since `(1px border + 1px margin) == (2px border + 0)`, the margin-box never changes when toggling selection → no shake, while the **2px-selected emphasis from Figma is preserved**.
+Applies to `TicketCard`, `SessionCard`, `AddonCard`. `MerchCard` keeps a constant **1px** border (its Figma selected state is 1px, not 2px) — it was the reference object.
+
+#### Decision on `box-sizing: content-box`
+Not applied. With **auto-height** cards the border always adds to the outer height regardless of `box-sizing`, so content-box would **not** fix the shake; worse, overriding Quasar's `border-box` would break the flex/grid + padding sizing the cards rely on. The margin-compensation above is what removes the shake.
+
+**Verification:** `yarn build` succeeds; `border-[2px]` emits `border-width:2px` and `m-[1px]` emits `margin:1px` (the old `border-2` generated nothing).

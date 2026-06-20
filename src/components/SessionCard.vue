@@ -36,9 +36,9 @@ const spotsText = computed(() => (isFull.value ? 'Sold Out' : `${remaining.value
 const timeRange = computed(() => formatTimeRange(props.session.date, props.session.endDate))
 
 const cardClass = computed(() => {
-  if (isFull.value) return 'bg-surface-l2 border border-neutral-muted cursor-not-allowed'
-  if (props.selected) return 'bg-brand-muted-rest border-2 border-brand-emphasis cursor-pointer'
-  return 'bg-surface-l0 border border-neutral-muted cursor-pointer'
+  if (isFull.value) return 'bg-surface-l2 border border-neutral-muted m-[1px] cursor-not-allowed'
+  if (props.selected) return 'bg-brand-muted-rest border-[2px] border-brand-emphasis cursor-pointer'
+  return 'bg-surface-l0 border border-neutral-muted m-[1px] cursor-pointer'
 })
 
 function onToggle() {
@@ -48,7 +48,7 @@ function onToggle() {
 
 <template>
   <div
-    class="flex flex-col gap-[8px] p-[16px] rounded-[6px] transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
+    class="flex flex-col gap-[8px] p-[16px] rounded-[6px] border-solid transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
     :class="cardClass"
     role="checkbox"
     :aria-checked="selected"

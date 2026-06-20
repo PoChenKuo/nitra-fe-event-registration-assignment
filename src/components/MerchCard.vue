@@ -15,11 +15,11 @@ const selected = computed(() => props.qty > 0)
 
 <template>
   <div
-    class="flex flex-col gap-[8px] p-[16px] rounded-[8px] transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
+    class="flex flex-col gap-[8px] p-[16px] rounded-[8px] border border-solid transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
     :class="
       selected
-        ? 'bg-brand-muted-rest border border-brand-emphasis'
-        : 'bg-surface-l0 border border-neutral-muted'
+        ? 'bg-brand-muted-rest border-brand-emphasis'
+        : 'bg-surface-l0 border-neutral-muted'
     "
   >
     <div class="flex items-center justify-between w-full text-subtitle1 text-neutral">

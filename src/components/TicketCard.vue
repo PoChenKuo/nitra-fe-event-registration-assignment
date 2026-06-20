@@ -8,11 +8,11 @@ defineEmits(['select'])
 
 <template>
   <div
-    class="flex flex-col gap-[12px] p-[20px] rounded-[6px] cursor-pointer select-none transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
+    class="flex flex-col gap-[12px] p-[20px] rounded-[6px] border-solid cursor-pointer select-none transition-colors shadow-[0px_4px_16px_0px_rgba(0,0,0,0.08),0px_1px_3px_0px_rgba(0,0,0,0.04)]"
     :class="
       selected
-        ? 'bg-brand-muted-rest border-2 border-brand-emphasis'
-        : 'bg-surface-l1 border border-neutral-muted'
+        ? 'bg-brand-muted-rest border-[2px] border-brand-emphasis'
+        : 'bg-surface-l1 border border-neutral-muted m-[1px]'
     "
     role="button"
     tabindex="0"
