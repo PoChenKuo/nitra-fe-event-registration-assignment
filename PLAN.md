@@ -494,3 +494,24 @@ Replace the magic numbers with a single named step constant (source of truth in
 Now the review section ↔ validation bucket ↔ wizard step link is explicit and renaming/reordering is centralised. (`useWizard`'s initial `ref(1)` and `SuccessScreen`'s `goToStep(1)` are plain "go to first step" — left as-is; could also adopt `STEP.ATTENDEE` for full consistency.)
 
 **Verification:** `yarn build` succeeds; no bare `sectionError(N)` / `edit-step="N"` remain.
+
+## Tasks 11 - Automatic workshop de-selection upon session conflict
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Address the desync issue where a user selects a workshop, goes back to Step 2, and selects a conflicting session. Since the specification document does not state that selecting a workshop prevents selecting overlapping sessions in the future, the session selection should remain free, and any conflicting workshops should be automatically deselected.
+
+### Result / Decision
+
+#### Implementation — `src/composables/useRegistration.js`
+- Moved the auto-filter logic directly into the `toggleSession` action.
+- When `toggleSession` is called to add/remove a session, it immediately filters the `workshopIds` array to remove any conflicting workshops.
+- This adheres strictly to the evaluation criteria "Preference for computed derived state over manual watch updates" by avoiding an global reactive `watch` effect and handling state mutations purely inside the triggering action.
+
+**Verification:** `yarn build` succeeds.
+

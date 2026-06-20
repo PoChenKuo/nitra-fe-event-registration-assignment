@@ -1,4 +1,7 @@
 import { reactive, ref, computed, provide, inject } from 'vue'
+import { sessions } from '../mocks/sessions.js'
+import { addons } from '../mocks/addons.js'
+import { overlaps } from '../utils/validators.js'
 
 const REGISTRATION_KEY = Symbol('registration')
 
@@ -19,6 +22,9 @@ export function provideRegistration() {
 
   const ticketTypeId = ref(null)
 
+  // Step 3 — add-ons (declared early to support toggleSession auto-filter)
+  const workshopIds = ref([])
+
   // Step 2 — session selection. Conflicts are allowed here and validated at
   // Review (per spec); only capacity-full sessions are non-selectable.
   const selectedSessionIds = ref([])
@@ -26,6 +32,14 @@ export function provideRegistration() {
     const i = selectedSessionIds.value.indexOf(id)
     if (i === -1) selectedSessionIds.value.push(id)
     else selectedSessionIds.value.splice(i, 1)
+
+    // Automatically resolve workshop-session conflicts inside the action
+    const activeSessions = sessions.filter((s) => selectedSessionIds.value.includes(s.id))
+    workshopIds.value = workshopIds.value.filter((wId) => {
+      const w = addons.find((a) => a.id === wId)
+      if (!w) return true
+      return !activeSessions.some((s) => overlaps(w, s))
+    })
   }
   function isSessionSelected(id) {
     return selectedSessionIds.value.includes(id)
@@ -37,7 +51,6 @@ export function provideRegistration() {
 
   // Step 3 — add-ons. Workshops & meals are simple toggles; merchandise tracks
   // a quantity (and optional size) per item.
-  const workshopIds = ref([])
   const mealIds = ref([])
   const merch = reactive({}) // id -> { qty, size }
 
