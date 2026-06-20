@@ -11,7 +11,7 @@ defineEmits(['update:modelValue'])
     <div
       v-for="it in items"
       :key="it.key"
-      class="px-[20px] py-[8px] rounded-[8px] text-[13px] cursor-pointer select-none transition-colors"
+      class="px-[20px] max-[480px]:px-[10px] py-[8px] rounded-[8px] text-[13px] cursor-pointer select-none transition-colors"
       :class="
         modelValue === it.key
           ? 'bg-brand-emphasis-rest text-inverse font-semibold'

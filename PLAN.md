@@ -735,3 +735,23 @@ To prevent layout jitter/shift (page layout shifting horizontally) when navigati
 
 **Verification:** `corepack yarn build` succeeds.
 
+
+## Tasks 22 - Responsive padding for SegmentedTabs (<480px)
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+On viewport widths below 480px, reduce the horizontal padding (`px`) of the tabs inside `SegmentedTabs.vue` to 10px (from 20px) to prevent layout overflow on small screens.
+
+### Result / Decision
+
+#### Implementation — Responsive Padding
+- **src/components/SegmentedTabs.vue**: Configured responsive padding using UnoCSS utility class `max-[480px]:px-[10px]` (less than 480px viewport width) on the tab items, eliminating the need for scoped CSS styles.
+
+**Verification:** `corepack yarn build` succeeds.
+
+
