@@ -76,13 +76,13 @@ function onToggle() {
       </span>
     </div>
 
-    <p class="text-subtitle1" :class="isFull ? 'text-neutral-disabled' : 'text-neutral'">
+    <p class="m-0 text-subtitle1" :class="isFull ? 'text-neutral-disabled' : 'text-neutral'">
       {{ session.title }}
     </p>
-    <p class="text-sm" :class="isFull ? 'text-neutral-disabled' : 'text-neutral-muted'">
+    <p class="m-0 text-sm" :class="isFull ? 'text-neutral-disabled' : 'text-neutral-muted'">
       {{ session.speaker }}, {{ session.speakerTitle }}
     </p>
-    <p class="text-xs" :class="isFull ? 'text-neutral-disabled' : 'text-neutral-quiet'">
+    <p class="m-0 text-xs" :class="isFull ? 'text-neutral-disabled' : 'text-neutral-quiet'">
       {{ timeRange }}
     </p>
 
@@ -95,6 +95,6 @@ function onToggle() {
       />
     </div>
 
-    <p class="text-xs font-medium" :class="tone.text">{{ spotsText }}</p>
+    <p class="m-0 text-xs font-medium" :class="tone.text">{{ spotsText }}</p>
   </div>
 </template>

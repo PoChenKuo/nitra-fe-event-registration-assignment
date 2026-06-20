@@ -19,8 +19,9 @@ function select(id) {
   <section class="flex flex-col gap-[16px]">
     <h3 class="text-subtitle1 text-neutral">Select Ticket Type</h3>
 
-    <!-- Wide: equal-height row -->
-    <div v-if="!isNarrow" class="flex gap-[16px] items-stretch">
+    <!-- Wide: equal-height row. `content-start` keeps the (single) flex line
+         packed to the top so stretched cards don't gain stray bottom space. -->
+    <div v-if="!isNarrow" class="flex gap-[16px] items-stretch [align-content:start]">
       <TicketCard
         v-for="t in tickets"
         :key="t.id"

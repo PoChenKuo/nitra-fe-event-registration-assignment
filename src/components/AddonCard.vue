@@ -37,11 +37,11 @@ function onToggle() {
       <span class="text-brand-emphasis">${{ addon.price }}</span>
     </div>
 
-    <p class="text-sm text-neutral-muted">{{ addon.description }}</p>
-    <p v-if="timeText" class="text-xs text-neutral-quiet">{{ timeText }}</p>
+    <p class="m-0 text-sm text-neutral-muted">{{ addon.description }}</p>
+    <p v-if="timeText" class="m-0 text-xs text-neutral-quiet">{{ timeText }}</p>
     <p
       v-if="status"
-      class="text-xs"
+      class="m-0 text-xs"
       :class="status.tone === 'danger' ? 'text-danger' : 'text-neutral-quiet'"
     >
       {{ status.text }}

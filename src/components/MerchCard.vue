@@ -27,7 +27,7 @@ const selected = computed(() => props.qty > 0)
       <span>${{ addon.price }}</span>
     </div>
 
-    <p class="text-sm text-neutral-muted">{{ addon.description }}</p>
+    <p class="m-0 text-sm text-neutral-muted">{{ addon.description }}</p>
 
     <div class="flex flex-wrap items-center gap-[16px]">
       <SizeSelect
@@ -48,6 +48,6 @@ const selected = computed(() => props.qty > 0)
       </div>
     </div>
 
-    <p v-if="selected" class="text-xs font-semibold text-success">✓ Added to order</p>
+    <p v-if="selected" class="m-0 text-xs font-semibold text-success">✓ Added to order</p>
   </div>
 </template>
