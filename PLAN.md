@@ -466,3 +466,31 @@ The visual style of disabled sessions should also be consistent. When a session 
 **Verification:** `yarn build` succeeds; `bg-gray-50` / `text-gray-700` / `text-yellow-800` / `text-danger-emphasis` (+ `--text-danger-emphasis: #991414`) present in generated CSS.
 
 > Note: weights still render heavier than the design tokens (e.g. `font-medium` 570 → ~700) because the Inter variable font isn't loaded yet — a global Inter import is the proper fix (deferred).
+
+## Tasks 10 - Replace hardcoded step numbers in Review validation
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+`src/pages/steps/ReviewStep.vue` (and `useValidation`) reference steps with bare
+magic numbers — e.g. `:edit-step="2" :error="sectionError(2)"` and
+`errorsByStep = { 1, 2, 3 }`. Hardcoded indices are brittle and unclear from an
+engineering perspective: the link between a review section, its validation
+bucket, and its wizard step is implicit.
+
+Replace the magic numbers with a single named step constant (source of truth in
+`src/constants/steps.js`) used by `STEPS`, `useValidation.errorsByStep`, and the
+`ReviewStep` sections.
+### Result / Decision
+
+- `src/constants/steps.js`: added a named **`STEP`** enum (`ATTENDEE: 1`, `SESSIONS: 2`, `ADDONS: 3`, `REVIEW: 4`) as the single source of truth; `STEPS[].id` now references it.
+- `src/composables/useValidation.js`: `errorsByStep` keyed by `[STEP.ATTENDEE]` / `[STEP.SESSIONS]` / `[STEP.ADDONS]` instead of `1/2/3`.
+- `src/pages/steps/ReviewStep.vue`: each `ReviewSection` now uses `:edit-step="STEP.X"` / `:error="sectionError(STEP.X)"` — no bare indices.
+
+Now the review section ↔ validation bucket ↔ wizard step link is explicit and renaming/reordering is centralised. (`useWizard`'s initial `ref(1)` and `SuccessScreen`'s `goToStep(1)` are plain "go to first step" — left as-is; could also adopt `STEP.ATTENDEE` for full consistency.)
+
+**Verification:** `yarn build` succeeds; no bare `sectionError(N)` / `edit-step="N"` remain.

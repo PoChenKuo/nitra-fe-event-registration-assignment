@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { STEP } from '../../constants/steps.js'
 import { sessions } from '../../mocks/sessions.js'
 import { addons } from '../../mocks/addons.js'
 import { useRegistration } from '../../composables/useRegistration.js'
@@ -87,7 +88,7 @@ const addonRows = computed(() => {
     <ErrorBanner v-if="showErrors && errorList.length" :errors="errorList" />
 
     <!-- Attendee -->
-    <ReviewSection title="Attendee Information" :edit-step="1" :error="sectionError(1)">
+    <ReviewSection title="Attendee Information" :edit-step="STEP.ATTENDEE" :error="sectionError(STEP.ATTENDEE)">
       <div v-for="r in attendeeRows" :key="r.label" class="flex justify-between gap-[16px] w-full text-sm">
         <span class="shrink-0 text-neutral-muted">{{ r.label }}</span>
         <span class="text-right" :class="r.err ? 'text-danger' : 'text-neutral'">
@@ -97,7 +98,7 @@ const addonRows = computed(() => {
     </ReviewSection>
 
     <!-- Sessions -->
-    <ReviewSection title="Selected Sessions" :edit-step="2" :error="sectionError(2)">
+    <ReviewSection title="Selected Sessions" :edit-step="STEP.SESSIONS" :error="sectionError(STEP.SESSIONS)">
       <div v-for="r in sessionRows" :key="r.value" class="flex justify-between gap-[16px] w-full text-sm">
         <span class="shrink-0 text-neutral-muted">{{ r.label }}</span>
         <span class="text-right text-neutral">{{ r.value }}</span>
@@ -106,7 +107,7 @@ const addonRows = computed(() => {
     </ReviewSection>
 
     <!-- Add-ons -->
-    <ReviewSection title="Add-ons" :edit-step="3" :error="sectionError(3)">
+    <ReviewSection title="Add-ons" :edit-step="STEP.ADDONS" :error="sectionError(STEP.ADDONS)">
       <div v-for="(r, i) in addonRows" :key="i" class="flex justify-between gap-[16px] w-full text-sm">
         <span class="shrink-0 text-neutral-muted">{{ r.label }}</span>
         <span class="text-right text-neutral">{{ r.value }}</span>

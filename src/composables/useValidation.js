@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { sessions } from '../mocks/sessions.js'
 import { addons } from '../mocks/addons.js'
 import { useRegistration } from './useRegistration.js'
+import { STEP } from '../constants/steps.js'
 import { isEmail, isPhone, overlaps } from '../utils/validators.js'
 
 /**
@@ -65,9 +66,9 @@ export function useValidation() {
   })
 
   const errorsByStep = computed(() => ({
-    1: attendeeErrors.value,
-    2: sessionErrors.value,
-    3: addonErrors.value,
+    [STEP.ATTENDEE]: attendeeErrors.value,
+    [STEP.SESSIONS]: sessionErrors.value,
+    [STEP.ADDONS]: addonErrors.value,
   }))
 
   const errorList = computed(() => {
