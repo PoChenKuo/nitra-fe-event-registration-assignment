@@ -627,3 +627,25 @@ Clear default margins of the event name paragraph in `AppHeader.vue` by applying
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 17 - Replace TicketSelector carousel with Quasar Carousel
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Replace the native scroll-snap carousel in `TicketSelector.vue` with Quasar's Carousel component (`q-carousel`) for screen widths below 960px. Ensure the carousel supports swipe, animation, navigation, and arrows without auto-selecting on transition.
+
+### Result / Decision
+
+#### Implementation — `src/components/TicketSelector.vue`
+- Replaced native horizontal scroll wrapper with `<q-carousel>` and `<q-carousel-slide>`.
+- Set `carouselSlide` ref and synced it using a `watch` on `ticketTypeId.value` to ensure the carousel slides to the active selection when clicked.
+- Omitted auto-selection logic on swiping (no watch in the reverse direction), so swiping/transitioning the carousel does not automatically select the ticket type.
+- Styled `q-carousel-slide` with `px-[48px] pb-[40px] pt-[8px]` and set `max-w-[400px]` on the card to prevent overlap with the carousel controls/arrows.
+
+**Verification:** `yarn build` succeeds.
+
+
