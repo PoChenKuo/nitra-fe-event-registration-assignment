@@ -30,11 +30,11 @@ const items = computed(() =>
       <li
         v-for="{ step, state, connectorFilled, isLast } in items"
         :key="step.id"
-        class="flex items-center"
-        :class="isLast ? 'shrink-0' : 'flex-1'"
+        class="flex flex-col lg:flex-row items-center"
+        :class="isLast ? 'flex-1 lg:flex-none' : 'flex-1'"
       >
         <div
-          class="flex items-center gap-[10px] shrink-0 cursor-pointer select-none"
+          class="flex flex-col lg:flex-row items-center gap-[6px] lg:gap-[10px] shrink-0 cursor-pointer select-none text-center lg:text-left"
           role="button"
           tabindex="0"
           :aria-current="state === 'active' ? 'step' : undefined"
@@ -67,7 +67,7 @@ const items = computed(() =>
           </span>
         </div>
 
-        <div v-if="!isLast" class="flex flex-1 items-center px-[16px]" aria-hidden="true">
+        <div v-if="!isLast" class="flex flex-1 items-center px-[16px] lt-lg:hidden" aria-hidden="true">
           <span
             class="flex-1 h-[2px] rounded-[1px]"
             :class="connectorFilled ? 'bg-brand-emphasis-rest' : 'bg-surface-l2'"

@@ -670,3 +670,26 @@ On viewport widths below 768px, set the horizontal padding of `IndexPage.vue` to
 
 
 
+## Tasks 19 - Responsive Stepper Layout (<1024px)
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+On viewport widths below 1024px, modify the `WizardStepper.vue` layout to stack step icons on top of their labels ("ICON在上 文字在下") and completely hide the horizontal transition progress lines. For widths 1024px and above, the layout should remain unchanged (horizontal icon-next-to-label alignment with visible connector lines).
+
+### Result / Decision
+
+#### Implementation — Responsive Stepper Layout
+- **src/components/WizardStepper.vue**:
+  - Updated the list item (`li`) container's layout class to `flex flex-col lg:flex-row items-center`, adjusting flex behaviors so they expand evenly on mobile/tablet and behave as inline items on desktop (`flex-1 lg:flex-none` for the last item).
+  - Configured the step interaction button container to stack vertically on small viewports with a 6px gap, and horizontally on desktop screens with a 10px gap: `flex flex-col lg:flex-row items-center text-center lg:text-left gap-[6px] lg:gap-[10px]`.
+  - Used `lt-lg:hidden` (less-than-lg viewport size) on the transition line containers to avoid styling collision with Quasar's default `.hidden` class which uses `!important`, ensuring connector lines are correctly visible on viewports >= 1024px.
+
+**Verification:** `corepack yarn build` succeeds.
+
+
+
