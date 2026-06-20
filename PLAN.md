@@ -534,4 +534,24 @@ Ensure ReviewSection container styling dynamically changes to a 2px red border (
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 13 - Refactor ReviewSection Edit button to span
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Refactor the Edit button in ReviewSection from a `<button>` tag to a custom styled `<span>` with proper keyboard accessibility. This prevents default browser and framework button styles from leaking in and causing CSS styling differences.
+
+### Result / Decision
+
+#### Implementation — `src/components/ReviewSection.vue`
+- Changed the `<button>` element to a `<span>` element.
+- Added `role="button"`, `tabindex="0"`, and key handlers (`@keydown.enter.prevent`, `@keydown.space.prevent`) to maintain full accessibility (a11y) while avoiding HTML button style pollution.
+
+**Verification:** `yarn build` succeeds.
+
+
 

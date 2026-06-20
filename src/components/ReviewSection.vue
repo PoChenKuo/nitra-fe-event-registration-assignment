@@ -21,13 +21,16 @@ const { goToStep } = useWizard()
   >
     <div class="flex items-center justify-between w-full">
       <h3 class="text-subtitle1" :class="error ? 'text-danger' : 'text-neutral'">{{ title }}</h3>
-      <button
-        type="button"
-        class="text-sm font-semibold text-brand underline leading-[16px]"
+      <span
+        role="button"
+        tabindex="0"
+        class="cursor-pointer text-sm font-semibold text-brand underline leading-[16px] select-none focus:outline-none"
         @click="goToStep(editStep)"
+        @keydown.enter.prevent="goToStep(editStep)"
+        @keydown.space.prevent="goToStep(editStep)"
       >
         Edit → Step {{ editStep }}
-      </button>
+      </span>
     </div>
     <slot />
   </div>
