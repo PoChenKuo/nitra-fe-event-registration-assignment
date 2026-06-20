@@ -648,4 +648,25 @@ Replace the native scroll-snap carousel in `TicketSelector.vue` with Quasar's Ca
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 18 - Make layout padding responsive on small viewports and limit max-width
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+On viewport widths below 768px, set the horizontal padding of `IndexPage.vue` to 24px (from 120px) to prevent layout squishing on mobile and tablet screens. For alignment consistency, apply the same responsive padding to `WizardStepper.vue` and `WizardFooter.vue`. Additionally, limit the maximum layout width of the page container, stepper, and footer to 1280px and center them.
+
+### Result / Decision
+
+#### Implementation — Responsive Padding and Max-Width
+- **src/pages/IndexPage.vue**: Changed `px-[120px]` to `px-[24px] md:px-[120px]` on the main container div, and set the maximum width constraint to `max-w-[1280px]` (from `max-w-[1440px]`).
+- **src/components/WizardStepper.vue**: Changed `px-[120px]` to `px-[24px] md:px-[120px]` on the step list container, wrapped it in a full-width background div, and added `max-w-[1280px] mx-auto` to the list container.
+- **src/components/WizardFooter.vue**: Changed `px-[120px]` to `px-[24px] md:px-[120px]` on the action footer container, wrapped it in a full-width background div, and added `max-w-[1280px] mx-auto` to the inner flex container.
+
+**Verification:** `corepack yarn build` succeeds.
+
+
 

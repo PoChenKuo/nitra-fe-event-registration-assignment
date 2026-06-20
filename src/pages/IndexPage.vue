@@ -36,7 +36,7 @@ const transitionName = computed(() =>
   <q-page class="bg-surface-l0 overflow-hidden">
     <SuccessScreen v-if="submitted" />
     <transition v-else :name="transitionName" mode="out-in">
-      <div :key="currentStep" class="mx-auto max-w-[1440px] px-[120px] py-[40px]">
+      <div :key="currentStep" class="mx-auto max-w-[1280px] px-[24px] md:px-[120px] py-[40px]">
         <component :is="activeComponent" />
       </div>
     </transition>
