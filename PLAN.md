@@ -515,3 +515,23 @@ Address the desync issue where a user selects a workshop, goes back to Step 2, a
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 12 - Fix ReviewSection border style on error
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Ensure ReviewSection container styling dynamically changes to a 2px red border (`border-[2px] border-danger-emphasis`) on error states instead of remaining a 1px border.
+
+### Result / Decision
+
+#### Implementation — `src/components/ReviewSection.vue`
+- Changed border configuration to dynamically toggle between `border-[2px] border-danger-emphasis` (on error, no margin) and `border border-neutral-muted m-[1px]` (on non-error, margin 1px) to enforce the correct 2px styling.
+- Employed margin compensation (no margin on error state, `m-[1px]` on normal state) to keep layout offsets aligned.
+
+**Verification:** `yarn build` succeeds.
+
+

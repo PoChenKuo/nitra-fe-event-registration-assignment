@@ -12,8 +12,12 @@ const { goToStep } = useWizard()
 
 <template>
   <div
-    class="flex flex-col gap-[12px] p-[20px] rounded-[6px] bg-surface-l1 border"
-    :class="error ? 'border-danger-emphasis' : 'border-neutral-muted'"
+    class="flex flex-col gap-[12px] p-[20px] rounded-[6px] bg-surface-l1 border-solid"
+    :class="
+      error
+        ? 'border-[2px] border-danger-emphasis '
+        : 'border border-neutral-muted m-[1px]'
+    "
   >
     <div class="flex items-center justify-between w-full">
       <h3 class="text-subtitle1" :class="error ? 'text-danger' : 'text-neutral'">{{ title }}</h3>
