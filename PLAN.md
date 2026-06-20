@@ -190,3 +190,52 @@ Central reactive store (the System Design "Storage"): `attendee` (6 fields), `ti
 - **Perk icon:** Quasar `check_circle` instead of the Figma duotone image — themeable, no raw asset.
 - **Token-first**, no hardcoded hex (shadow is a black-alpha effect, not a color token).
 - **Verification:** `yarn build` succeeds; key utilities (card shadow, snap, responsive grid, brand tokens) confirmed in generated CSS.
+
+## Tasks 4 - build page Select Sessions
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+With mock data - src\mocks\sessions.js
+Reference the example to build main page Select Sessions.
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1072-938&m=dev
+### Result / Decision
+
+**Figma source:** `Step 2 — Session Selection` content `1072:938`. Cards `p-16 gap-8 rounded-6`; date tabs `bg-surface-l2 p-4 rounded-10`; capacity bar `h-6 rounded-3`.
+
+#### Components added
+- `SessionCard.vue` — track badge (per-track scale colours: main=gray, frontend=yellow, backend=blue, devops=orange), 16px checkbox, title/speaker/time, capacity bar + spots text. States: **selected** (`bg-brand-muted-rest` + 2px brand + checked box), **unselected** (white + 1px muted + empty box w/ `border-neutral-emphasis`), **full/disabled** (`bg-surface-l2`, `text-neutral-disabled`, no box, "Sold Out"). `role="checkbox"` + keyboard.
+- `DateSwitcher.vue` — segmented control (`role="tablist"`/`tab`), active = `bg-brand-emphasis-rest` white, inactive = `text-neutral-muted`.
+- `pages/steps/SessionsStep.vue` — groups sessions by day, date switcher + "N sessions selected" hint + 2-col responsive grid.
+- `utils/datetime.js` — UTC-based time/date formatting (timestamps are `…Z`; format in UTC so wall time matches the design).
+
+#### State — `useRegistration`
+- Added `selectedSessionIds` + `toggleSession` / `isSessionSelected` (System Design "sessions selection states").
+
+#### Capacity bar tone (matches Figma examples)
+full → `bg-red-500` / "Sold Out"; ≥75% → `bg-orange-600` + `text-orange-700`; ≥50% → `bg-yellow-800` + `text-warning`; <50% → `bg-brand-emphasis-rest` + `text-brand-emphasis`.
+
+#### Decisions
+- **Capacity vs conflict:** per the README (authoritative), only **capacity-full** sessions are disabled; **time conflicts stay freely selectable** and are flagged at Review. The Figma mock greys a *conflicting* (not full) session — I followed the README and noted the divergence.
+- **Checkbox** is a 16px custom box (not `q-checkbox`) to hit the exact Figma `rounded-2` + brand fill.
+- **Colours** use the project's scale utilities (`bg-orange-600`, etc.) — verified in generated CSS to equal the Figma raw scale refs exactly.
+- **Verification:** `yarn build` succeeds.
+
+## Tasks 5 - Add-ons
+### Status
+#### Done
+false
+#### Pending
+true
+#### Deprecated
+false
+### Description
+With mock data - src\mocks\addons.js
+Reference the example to build main page Add-ons.
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1073-925&m=dev
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1149-595&m=dev
+### Result / Decision
