@@ -261,3 +261,71 @@ https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Co
 - **Order summary names** use full mock names (e.g. "Developer Sticker Pack × 3") vs the Figma mock's shortened "Sticker Pack" — data-driven is correct.
 - **Meals** have no Figma card reference → styled consistently with workshop cards (brand price, no time/status).
 - **Verification:** `yarn build` succeeds; info/success/surface tokens + `rounded-8` confirmed in generated CSS.
+
+
+
+## Tasks 6 - Review Your Registration
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Reference the example to build main page Review Your Registration
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1074-897&m=dev
+https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1076-904&m=dev
+
+The Validator for each steps' data should be placed on this page and list errors to present.
+
+
+
+* For Step 1 — Attendee Info
+**Fields:**
+| Field            | Type  | Validation                                                                 |
+| ---------------- | ----- | -------------------------------------------------------------------------- |
+| Full Name        | text  | required                                                                   |
+| Email            | email | required, valid email format                                               |
+| Phone            | tel   | required, valid phone format                                               |
+| Company          | text  | required                                                                   |
+| Job Title        | text  | required                                                                   |
+| Shipping Address | text  | optional — becomes **required** when any merchandise is selected in Step 3 |
+
+
+* For Step 2 — Session Selection
+**Time-conflict detection** — If conflicts are detected, the relevant step should be indicated with errors.
+
+* For Step 3 — Add-ons
+**Workshop time conflicts** — Since the page are freely moving, the incoming error due from async states changing should check again in page 4.
+**Merchandise options** — some items have `sizes` (size selector) and `maxQuantity` (quantity picker), please make sure both attributes are assigned with value in step4.
+
+### Result / Decision
+
+**Figma sources:** `Step 4 — Review & Submit` (`1074:897`), `Validation Error State` (`1076:904`), `Success State` (`1075:903`). Section cards `bg-surface-l1 p-20 gap-12 rounded-6`; error banner `bg-danger-muted-rest`; success `text-h2 text-success`.
+
+#### Validation — `composables/useValidation.js` + `utils/validators.js`
+Unified, reactive, evaluated on Review:
+- **Step 1**: full name / company / job title required; email required + format; phone required + format; ticket required; shipping required when merchandise in cart.
+- **Step 2**: pairwise time-overlap among selected sessions.
+- **Step 3**: re-check workshop↔session conflicts (async state may have changed); sized merch with qty>0 must have a size.
+- Exposes `errorsByStep`, flat `errorList` (banner), `errorStepSet` (stepper), `isValid`.
+
+#### Submission — `composables/useSubmission.js`
+`submit()` sets `attemptedSubmit`; if invalid, stays (errors surface); if valid, records `confirmationId` (`TC<year>-#####`) and flips `submitted`. `canSubmit` disables the button after a failed attempt until fixed.
+
+#### Components
+- `ReviewStep.vue` — title, error banner, 3 review sections (Attendee / Sessions / Add-ons) + Pricing Summary (Grand Total). Per-field red `— (required)` / `— (invalid)` in the Attendee section; section gets red border/header when its step has errors.
+- `ReviewSection.vue` (card + `Edit → Step N` link via `goToStep`), `ErrorBanner.vue`, `SuccessScreen.vue` (green check, confirmation #, data-driven thank-you, Back to Home → `reset()` + step 1).
+
+#### Wiring
+- `useRegistration`: `submitted`, `confirmationId`, `reset()`.
+- `WizardFooter`: on the last step the primary button calls `submit()` (disabled when `!canSubmit`).
+- `MainLayout`: hides stepper + footer when `submitted` (success is full-screen under the header).
+- `IndexPage`: maps step 4 → `ReviewStep`, renders `SuccessScreen` when submitted, and a `watchEffect` keeps the stepper's error marks in sync with live validation after a submit attempt (persists while editing). Removed the obsolete `StepPlaceholder`.
+
+#### Decisions
+- **Stepper errors driven reactively** (not set once) so red marks clear live as the user fixes fields via the Edit links.
+- **Review add-on/ticket values** use whole-dollar `($149)` per Figma; the Pricing Summary uses `$X,XXX.XX`.
+- **Global `button { font-family: inherit }`** so the text `Edit` link (a real `<button>`) matches the app font.
+- **Verification:** `yarn build` succeeds; danger/success tokens + `text-h2` confirmed in generated CSS.

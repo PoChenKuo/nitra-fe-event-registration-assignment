@@ -8,17 +8,19 @@ import WizardFooter from '../components/WizardFooter.vue'
 // Owns the wizard navigation state and the registration data store for the
 // whole shell, so step pages can mount/unmount without losing state.
 provideWizard()
-provideRegistration()
+const { submitted } = provideRegistration()
 </script>
 
 <template>
   <q-layout view="hHh lpR fFf">
-    <!-- Header region: brand header + stepper, pinned to top -->
+    <!-- Header region: brand header + stepper (stepper hidden on the success screen) -->
     <q-header class="bg-surface-l0 text-neutral">
       <AppHeader />
-      <div class="h-px bg-[var(--divider-default)]" />
-      <WizardStepper />
-      <div class="h-px bg-[var(--divider-default)]" />
+      <template v-if="!submitted">
+        <div class="h-px bg-[var(--divider-default)]" />
+        <WizardStepper />
+        <div class="h-px bg-[var(--divider-default)]" />
+      </template>
     </q-header>
 
     <!-- Main content region: active step page -->
@@ -26,8 +28,8 @@ provideRegistration()
       <router-view />
     </q-page-container>
 
-    <!-- Footer region: action bar, pinned to bottom -->
-    <q-footer class="bg-surface-l0 text-neutral">
+    <!-- Footer region: action bar (hidden on the success screen) -->
+    <q-footer v-if="!submitted" class="bg-surface-l0 text-neutral">
       <div class="h-px bg-[var(--divider-default)]" />
       <WizardFooter />
     </q-footer>

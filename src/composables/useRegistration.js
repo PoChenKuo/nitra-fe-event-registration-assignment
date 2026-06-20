@@ -68,6 +68,29 @@ export function provideRegistration() {
   }
   const hasMerchandise = computed(() => Object.values(merch).some((m) => m.qty > 0))
 
+  // Step 4 — submission result.
+  const submitted = ref(false)
+  const confirmationId = ref(null)
+
+  function reset() {
+    Object.assign(attendee, {
+      fullName: '',
+      email: '',
+      phone: '',
+      company: '',
+      jobTitle: '',
+      shippingAddress: '',
+    })
+    ticketTypeId.value = null
+    selectedSessionIds.value = []
+    workshopIds.value = []
+    mealIds.value = []
+    for (const k of Object.keys(merch)) delete merch[k]
+    attemptedSubmit.value = false
+    submitted.value = false
+    confirmationId.value = null
+  }
+
   const registration = {
     attendee,
     ticketTypeId,
@@ -85,6 +108,9 @@ export function provideRegistration() {
     setMerchQty,
     setMerchSize,
     hasMerchandise,
+    submitted,
+    confirmationId,
+    reset,
   }
   provide(REGISTRATION_KEY, registration)
   return registration

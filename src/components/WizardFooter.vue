@@ -1,7 +1,14 @@
 <script setup>
 import { useWizard } from '../composables/useWizard.js'
+import { useSubmission } from '../composables/useSubmission.js'
 
-const { currentMeta, isFirst, goNext, goBack } = useWizard()
+const { currentMeta, isFirst, isLast, goNext, goBack } = useWizard()
+const { canSubmit, submit } = useSubmission()
+
+function onPrimary() {
+  if (isLast.value) submit()
+  else goNext()
+}
 </script>
 
 <template>
@@ -22,8 +29,9 @@ const { currentMeta, isFirst, goNext, goBack } = useWizard()
       no-caps
       color="accent"
       :label="currentMeta.nextLabel"
+      :disable="isLast && !canSubmit"
       class="rounded-[10px] text-md font-semibold px-[16px]"
-      @click="goNext"
+      @click="onPrimary"
     />
   </div>
 </template>

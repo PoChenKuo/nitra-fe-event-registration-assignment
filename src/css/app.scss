@@ -1,6 +1,11 @@
 @import 'src/css/colors.scss';
 @import 'src/css/typography.scss';
 
+/* Native buttons should inherit the app font, not the UA default */
+button {
+  font-family: inherit;
+}
+
 /* Attendee form inputs — align Quasar's outlined q-input with the Figma spec
    (44px height, 6px radius, conditional border colours, 16px text). */
 .attendee-input.q-field--outlined .q-field__control {
