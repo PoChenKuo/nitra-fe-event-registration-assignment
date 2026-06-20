@@ -10,6 +10,6 @@ import BrandEmblem from './BrandEmblem.vue'
     >
       <BrandEmblem class="w-[28px] h-[14px]" />
     </div>
-    <p class="text-h4 text-neutral whitespace-nowrap">{{ event.name }}</p>
+    <p class="text-h4 text-neutral whitespace-nowrap m-0">{{ event.name }}</p>
   </header>
 </template>

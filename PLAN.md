@@ -609,3 +609,21 @@ Figma spec:
 
 **Verification:** `yarn build` succeeds.
 
+## Tasks 16 - Fix AppHeader title margin (chore)
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Clear default margins of the event name paragraph in `AppHeader.vue` by applying the `m-0` class, resolving minor styling alignment issues in the header.
+
+### Result / Decision
+
+#### Implementation — `src/components/AppHeader.vue`
+- Added `m-0` to the `<p class="text-h4 ...">` tag in [AppHeader.vue](file:///D:/startup/nitra-fe-event-registration-assignment/src/components/AppHeader.vue).
+
+**Verification:** `yarn build` succeeds.
+
