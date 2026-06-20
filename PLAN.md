@@ -416,3 +416,53 @@ Expected behavior:
 - Quasar's base `p { margin: 0 0 16px }` was adding 16px under every `<p>` on top of the flex `gap`. Added **`m-0`** to each card `<p>` (description / title / speaker / time / spots / status / "Added to order") so inner spacing is driven purely by `gap`, matching Figma. **Scoped to the card components — no global `p` reset** (to avoid affecting other copy).
 
 **Verification:** `yarn build` succeeds.
+
+## Tasks 9 - Session Availability, Disabled State, and Tag Style Fix
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Currently in the **Select Sessions** section, some session card states appear inconsistent with the expected behavior and the assignment requirements.
+According to the requirements, time conflict validation should happen in a later step. Therefore, during the session selection step, a session should not be disabled only because its time overlaps with another selected session.
+For example, `Database Performance Tuning` has available spots, so it should remain selectable in the session selection step even if its time overlaps with another selected session. The time conflict should be handled later by validation logic.
+At the same time, sold-out sessions should be treated as unavailable. A sold-out session should not be selectable unless the requirements explicitly define it as a reserved or preselected state.
+The visual style of disabled sessions should also be consistent. When a session card is disabled, its category tag should not keep the active category color. The tag color should be visually muted and aligned with the disabled card background/state.
+#### Expected Behavior
+1. Sessions with available spots should remain selectable during the session selection step.
+2. Time conflict validation should not disable session cards in this step.
+3. Time conflicts should be checked in the later validation step as required.
+4. Sold-out sessions should be disabled and unselectable.
+5. Sold-out sessions should not be counted as selected unless there is an explicit reserved/preselected state.
+6. Disabled session cards should use a clearly disabled visual style.
+7. Category tags inside disabled cards should also appear disabled.
+8. Disabled category tags should use a muted/background-aligned color instead of the active category color.
+9. The same category should use consistent active styling across available cards.
+10. The UI should clearly distinguish between:
+    * available sessions
+    * selected sessions
+    * sold-out sessions
+    * disabled sessions
+### Result / Decision
+* Written requirements are treated as the source of truth when screenshots and behavior appear inconsistent.
+* Time conflict validation is deferred to the later validation step.
+* Available sessions remain selectable in the session selection step.
+* Sold-out sessions are unavailable and cannot be newly selected.
+* Disabled cards should visually mute their inner elements, including category tags.
+* Category tag colors should be normalized by category when the session is active or selectable.
+
+#### Implementation — `src/components/SessionCard.vue`
+- **Availability already correct** (from Task 4): disabling is driven **only** by `isFull` (`registered >= capacity`). There is no conflict/overlap logic in `SessionCard` or `SessionsStep`, so time-overlapping-but-available sessions (e.g. *Database Performance Tuning*) stay selectable; conflicts are validated later in the Review step (Task 6). Sold-out cards can't be toggled (`onToggle` guards on `isFull`) and nothing is preselected, so they're never counted as selected.
+- **Fix applied:** `badgeClass` now returns **`bg-surface-l3 text-neutral-disabled`** when `isFull`, instead of the track colour — so a sold-out card's category tag is muted and aligned with the disabled (faded) card text, rather than keeping the active category colour. Available/selected cards still use the per-track `TRACK_BADGE` map (consistent active styling).
+- **State distinction:** available (white bg, coloured tag, empty checkbox, "N spots left") / selected (`bg-brand-muted-rest` + brand border + checked box) / sold-out (`bg-surface-l2`, muted tag + faded text, no checkbox, red bar + "Sold Out").
+
+- **Disabled tag colour** finalised to the Figma values **`bg-gray-50 text-gray-700`** (gray/50 + gray/700), matching the disabled card in the design (replacing an earlier too-faint `text-neutral-disabled`).
+- **Capacity bar + spots-left `tone`** (final): sold-out → `bg-danger-emphasis-rest` / `text-danger-emphasis`; ≥75% → `bg-orange-600` / `text-orange-700` (kept the Figma orange-600/700 split); ≥50% → `bg-yellow-800` / `text-yellow-800` (normalised so text == bar); <50% → `bg-brand-emphasis-rest` / `text-brand-emphasis`.
+- **"Sold Out"** is **bold + `text-danger-emphasis`**; other spots stay `font-medium`. `--text-danger-emphasis` is defined in `:root` (`#991414`), so the `var(..., #000)` fallback never applies (no black text).
+
+**Verification:** `yarn build` succeeds; `bg-gray-50` / `text-gray-700` / `text-yellow-800` / `text-danger-emphasis` (+ `--text-danger-emphasis: #991414`) present in generated CSS.
+
+> Note: weights still render heavier than the design tokens (e.g. `font-medium` 570 → ~700) because the Inter variable font isn't loaded yet — a global Inter import is the proper fix (deferred).

@@ -23,15 +23,22 @@ const fillPct = computed(() =>
 )
 const ratio = computed(() => props.session.registered / props.session.capacity)
 
-// Capacity bar + spots text colour by fullness (matches the Figma examples).
+// Capacity bar + spots text colour by fullness. For selectable sessions the
+// spots-left text matches its bar colour; sold-out uses danger emphasis.
 const tone = computed(() => {
-  if (isFull.value) return { fill: 'bg-red-500', text: 'text-danger' }
+  if (isFull.value) return { fill: 'bg-danger-emphasis-rest', text: 'text-danger-emphasis' }
   if (ratio.value >= 0.75) return { fill: 'bg-orange-600', text: 'text-orange-700' }
-  if (ratio.value >= 0.5) return { fill: 'bg-yellow-800', text: 'text-warning' }
+  if (ratio.value >= 0.5) return { fill: 'bg-yellow-800', text: 'text-yellow-800' }
   return { fill: 'bg-brand-emphasis-rest', text: 'text-brand-emphasis' }
 })
 
-const badgeClass = computed(() => TRACK_BADGE[props.session.track] ?? TRACK_BADGE.main)
+// A disabled (sold-out) card mutes its tag to the neutral grey the Figma
+// disabled card uses (gray/50 bg + gray/700 text) instead of the track colour.
+const badgeClass = computed(() =>
+  isFull.value
+    ? 'bg-gray-50 text-gray-700'
+    : (TRACK_BADGE[props.session.track] ?? TRACK_BADGE.main),
+)
 const spotsText = computed(() => (isFull.value ? 'Sold Out' : `${remaining.value} spots left`))
 const timeRange = computed(() => formatTimeRange(props.session.date, props.session.endDate))
 
@@ -95,6 +102,8 @@ function onToggle() {
       />
     </div>
 
-    <p class="m-0 text-xs font-medium" :class="tone.text">{{ spotsText }}</p>
+    <p class="m-0 text-xs" :class="[tone.text, isFull ? 'font-bold' : 'font-medium']">
+      {{ spotsText }}
+    </p>
   </div>
 </template>
