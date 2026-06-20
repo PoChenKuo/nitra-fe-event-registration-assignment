@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { sessions } from '../../mocks/sessions.js'
 import { useRegistration } from '../../composables/useRegistration.js'
 import { formatDateLabel, dateKey } from '../../utils/datetime.js'
-import DateSwitcher from '../../components/DateSwitcher.vue'
+import SegmentedTabs from '../../components/SegmentedTabs.vue'
 import SessionCard from '../../components/SessionCard.vue'
 
 const { selectedSessionIds, toggleSession, isSessionSelected } = useRegistration()
@@ -36,7 +36,7 @@ const hint = computed(() => {
     <h2 class="text-h3 text-neutral">Select Sessions</h2>
 
     <div class="flex flex-col gap-[16px]">
-      <DateSwitcher v-model="activeDate" :dates="dates" />
+      <SegmentedTabs v-model="activeDate" :items="dates" />
       <p class="text-sm text-neutral-muted">{{ hint }}</p>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-[16px]">

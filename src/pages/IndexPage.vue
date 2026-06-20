@@ -3,15 +3,17 @@ import { computed } from 'vue'
 import { useWizard } from '../composables/useWizard.js'
 import AttendeeInfoStep from './steps/AttendeeInfoStep.vue'
 import SessionsStep from './steps/SessionsStep.vue'
+import AddonsStep from './steps/AddonsStep.vue'
 import StepPlaceholder from './steps/StepPlaceholder.vue'
 
 const { currentStep, direction } = useWizard()
 
-// Map each step number to its page component. Steps 3–4 are placeholders until
-// their tasks land.
+// Map each step number to its page component. Step 4 is a placeholder until
+// its task lands.
 const stepComponents = {
   1: AttendeeInfoStep,
   2: SessionsStep,
+  3: AddonsStep,
 }
 const activeComponent = computed(() => stepComponents[currentStep.value] ?? StepPlaceholder)
 

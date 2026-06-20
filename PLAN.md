@@ -228,9 +228,9 @@ full → `bg-red-500` / "Sold Out"; ≥75% → `bg-orange-600` + `text-orange-70
 ## Tasks 5 - Add-ons
 ### Status
 #### Done
-false
-#### Pending
 true
+#### Pending
+false
 #### Deprecated
 false
 ### Description
@@ -239,3 +239,25 @@ Reference the example to build main page Add-ons.
 https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1073-925&m=dev
 https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1149-595&m=dev
 ### Result / Decision
+
+**Figma sources:** `Step 3 — Add-ons` (`1073:925`, Workshops) + `Step 3 — Add-ons (Merchandise)` (`1149:595`). Two-column layout: list (flex-1) + 380px Order Summary.
+
+#### Components added
+- `AddonCard.vue` — workshops & meals (toggle select). Header (name + brand-coloured price), description, optional time line, optional status. Workshop status: "N spots remaining" / "Sold Out" / conflict (danger). Selected = `bg-brand-muted-rest` + 2px brand.
+- `MerchCard.vue` — `rounded-8`, 1px brand border when in cart; `SizeSelect` (if `sizes`) + `QuantityPicker` (0..`maxQuantity`) + "max N" + green "✓ Added to order".
+- `QuantityPicker.vue` (±, 28px, min/max-disabled), `SizeSelect.vue` (q-menu dropdown, "Select" placeholder).
+- `OrderSummary.vue` — line items, VIP workshop-discount line (brand), divider, total; `$X,XXX.XX` via `utils/currency.js`.
+- `ShippingBanner.vue` — info banner (info-subtle bg + info-muted border), shown on Merchandise tab when cart has merch.
+- `SegmentedTabs.vue` — generic segmented control; **replaces `DateSwitcher`** (SessionsStep refactored to it, DateSwitcher deleted).
+
+#### State / logic
+- `useRegistration`: `workshopIds`, `mealIds`, `merch` (id→{qty,size}) + toggles/setters; `hasMerchandise` now derives from merch quantities. Removed the old `selectedAddons` stub.
+- `useOrderSummary.js` — shared computed (lines, VIP 10% workshop discount, total); reused by Review later.
+- **Workshop conflict:** workshops overlapping a Step-2 selected session are disabled (per README, which *does* require inline workshop-conflict blocking — distinct from session conflicts which defer to Review).
+
+#### Decisions
+- **Pricing:** workshop shown at full price with a separate "Workshop discount (VIP 10%)" line (matches Figma); merch as "Name × qty".
+- **Shipping banner** placed on the Merchandise tab when merch is in cart (matches Figma; README only says "when merchandise added").
+- **Order summary names** use full mock names (e.g. "Developer Sticker Pack × 3") vs the Figma mock's shortened "Sticker Pack" — data-driven is correct.
+- **Meals** have no Figma card reference → styled consistently with workshop cards (brand price, no time/status).
+- **Verification:** `yarn build` succeeds; info/success/surface tokens + `rounded-8` confirmed in generated CSS.

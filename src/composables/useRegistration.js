@@ -35,12 +35,38 @@ export function provideRegistration() {
   // inline error states so nothing turns red before a submit is attempted.
   const attemptedSubmit = ref(false)
 
-  // Populated by the Add-ons step (later task). Kept here so the Attendee step
-  // can react to whether merchandise was selected (shipping address requirement).
-  const selectedAddons = ref([])
-  const hasMerchandise = computed(() =>
-    selectedAddons.value.some((a) => a.category === 'merchandise'),
-  )
+  // Step 3 — add-ons. Workshops & meals are simple toggles; merchandise tracks
+  // a quantity (and optional size) per item.
+  const workshopIds = ref([])
+  const mealIds = ref([])
+  const merch = reactive({}) // id -> { qty, size }
+
+  function toggleIn(listRef, id) {
+    const i = listRef.value.indexOf(id)
+    if (i === -1) listRef.value.push(id)
+    else listRef.value.splice(i, 1)
+  }
+  function toggleWorkshop(id) {
+    toggleIn(workshopIds, id)
+  }
+  function toggleMeal(id) {
+    toggleIn(mealIds, id)
+  }
+  function merchQty(id) {
+    return merch[id]?.qty ?? 0
+  }
+  function merchSize(id) {
+    return merch[id]?.size ?? null
+  }
+  function setMerchQty(id, qty) {
+    const q = Math.max(0, qty)
+    if (q === 0) delete merch[id]
+    else merch[id] = { qty: q, size: merch[id]?.size ?? null }
+  }
+  function setMerchSize(id, size) {
+    merch[id] = { qty: merch[id]?.qty ?? 0, size }
+  }
+  const hasMerchandise = computed(() => Object.values(merch).some((m) => m.qty > 0))
 
   const registration = {
     attendee,
@@ -49,7 +75,15 @@ export function provideRegistration() {
     toggleSession,
     isSessionSelected,
     attemptedSubmit,
-    selectedAddons,
+    workshopIds,
+    mealIds,
+    merch,
+    toggleWorkshop,
+    toggleMeal,
+    merchQty,
+    merchSize,
+    setMerchQty,
+    setMerchSize,
     hasMerchandise,
   }
   provide(REGISTRATION_KEY, registration)
