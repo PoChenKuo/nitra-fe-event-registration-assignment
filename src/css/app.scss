@@ -1,6 +1,11 @@
 @import 'src/css/colors.scss';
 @import 'src/css/typography.scss';
 
+html {
+  overflow-y: scroll;
+}
+
+
 /* Native buttons should inherit the app font, not the UA default */
 button {
   font-family: inherit;

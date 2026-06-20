@@ -716,3 +716,22 @@ expected phone presentation was undefined. Define the phone format standard as
   - **Accepts:** `+15551234567`, `+1 555 1234567`, `+442079460958`. **Rejects:** `+1 (555) 123-4567` (parens/dashes), `5551234567` (no `+`), `+0555…` (leading zero), empty.
 - Consumers updated: `useValidation.js` (Step-1 phone error), `ReviewStep.vue` (per-field `— (invalid)`), `AttendeeForm.vue` (inline placeholder hint).
 - **Presentation standard = E.164**: the input hint guides to `+15551234567`; the value is stored/validated as E.164 and shown as-is in the Review summary.
+
+## Tasks 21 - Force vertical scrollbar on body
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+To prevent layout jitter/shift (page layout shifting horizontally) when navigating between steps of different heights, enforce a persistent vertical scrollbar on the viewport.
+
+### Result / Decision
+
+#### Implementation — Persistent Scrollbar
+- **src/css/app.scss**: Added `html { overflow-y: scroll; }` to force the vertical scrollbar to be always visible.
+
+**Verification:** `corepack yarn build` succeeds.
+
