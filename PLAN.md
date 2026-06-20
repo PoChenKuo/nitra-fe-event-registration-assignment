@@ -693,3 +693,26 @@ On viewport widths below 1024px, modify the `WizardStepper.vue` layout to stack 
 
 
 
+
+## Tasks 20 - Standardize phone format with E.164 validation
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+The phone field used a lenient `isPhone` check (any digits + separators), so the
+expected phone presentation was undefined. Define the phone format standard as
+**E.164** and design a dedicated validator `isValidE164Phone`.
+### Result / Decision
+- `src/utils/validators.js`: replaced the lenient `isPhone` with **`isValidE164Phone`**:
+  ```js
+  (v) => /^\+[1-9]\d{1,14}$/.test(String(v).replace(/ /g, ''))
+  ```
+  - **Normalize:** every space is removed first (`replace(/ /g, '')`), so the user may type grouped digits like `+1 555 1234567`.
+  - **Pattern `^\+[1-9]\d{1,14}$`:** a leading `+`, a country-code digit `1–9` (no leading zero), then `1–14` more digits → **2–15 digits total** (E.164 max).
+  - **Accepts:** `+15551234567`, `+1 555 1234567`, `+442079460958`. **Rejects:** `+1 (555) 123-4567` (parens/dashes), `5551234567` (no `+`), `+0555…` (leading zero), empty.
+- Consumers updated: `useValidation.js` (Step-1 phone error), `ReviewStep.vue` (per-field `— (invalid)`), `AttendeeForm.vue` (inline placeholder hint).
+- **Presentation standard = E.164**: the input hint guides to `+15551234567`; the value is stored/validated as E.164 and shown as-is in the Review summary.

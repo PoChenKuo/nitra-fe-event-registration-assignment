@@ -2,12 +2,16 @@
 import { computed } from 'vue'
 import { useRegistration } from '../composables/useRegistration.js'
 import FormField from './FormField.vue'
+import { isValidE164Phone } from '../utils/validators.js'
 
 const { attendee, hasMerchandise, attemptedSubmit } = useRegistration()
 
 // Shipping address is optional until merchandise is added in the Add-ons step.
 const shippingLabel = computed(() =>
   hasMerchandise.value ? 'Shipping Address' : 'Shipping Address (Optional)',
+)
+const phoneNumberPlaceholder = computed(
+  () => attemptedSubmit.value && !isValidE164Phone(attendee.phone.trim()) ? 'Invalid format, use e.g. +15551234567' : 'Enter your phone number',
 )
 const shippingError = computed(
   () => attemptedSubmit.value && hasMerchandise.value && !attendee.shippingAddress.trim(),
@@ -29,7 +33,7 @@ const shippingError = computed(
       v-model="attendee.phone"
       label="Phone"
       type="tel"
-      placeholder="Enter your phone number"
+      :placeholder="phoneNumberPlaceholder"
     />
     <FormField v-model="attendee.company" label="Company" placeholder="Enter your company name" />
     <FormField

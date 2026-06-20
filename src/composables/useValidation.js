@@ -3,7 +3,7 @@ import { sessions } from '../mocks/sessions.js'
 import { addons } from '../mocks/addons.js'
 import { useRegistration } from './useRegistration.js'
 import { STEP } from '../constants/steps.js'
-import { isEmail, isPhone, overlaps } from '../utils/validators.js'
+import { isEmail, isValidE164Phone, overlaps } from '../utils/validators.js'
 
 /**
  * Unified validation across all steps, evaluated on the Review step.
@@ -20,7 +20,8 @@ export function useValidation() {
     if (!a.email.trim()) e.push('Email is required')
     else if (!isEmail(a.email)) e.push('Email is invalid')
     if (!a.phone.trim()) e.push('Phone number is required')
-    else if (!isPhone(a.phone)) e.push('Phone number is invalid')
+    else if (!isValidE164Phone(a.phone))
+      e.push('Phone number is invalid')
     if (!a.company.trim()) e.push('Company is required')
     if (!a.jobTitle.trim()) e.push('Job title is required')
     if (!reg.ticketTypeId.value) e.push('Ticket type is required')

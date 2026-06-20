@@ -2,11 +2,10 @@
 
 export const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim())
 
-// Lenient phone check: digits with common separators, at least 7 digits.
-export const isPhone = (v) => {
-  const s = String(v).trim()
-  return /^[+]?[\d\s().-]{7,}$/.test(s) && (s.match(/\d/g)?.length ?? 0) >= 7
-}
+// E.164 international phone format: '+' then a country-code digit (1–9) and up
+// to 14 more digits (15 max). Spaces are stripped first, so "+1 555 1234567" is
+// accepted; parens / dashes / letters are rejected. e.g. +15551234567
+export const isValidE164Phone = (v) => /^\+[1-9]\d{1,14}$/.test(String(v).replace(/ /g, ''))
 
 /** True when two {date, endDate} time ranges overlap. */
 export function overlaps(a, b) {

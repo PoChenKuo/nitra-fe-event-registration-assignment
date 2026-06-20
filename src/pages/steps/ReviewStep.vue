@@ -6,7 +6,7 @@ import { addons } from '../../mocks/addons.js'
 import { useRegistration } from '../../composables/useRegistration.js'
 import { useValidation } from '../../composables/useValidation.js'
 import { useOrderSummary } from '../../composables/useOrderSummary.js'
-import { isEmail, isPhone } from '../../utils/validators.js'
+import { isEmail, isValidE164Phone } from '../../utils/validators.js'
 import { formatDateLabel, formatTime } from '../../utils/datetime.js'
 import { formatCurrency } from '../../utils/currency.js'
 import ReviewSection from '../../components/ReviewSection.vue'
@@ -26,7 +26,7 @@ const fieldErr = computed(() => {
   return {
     name: !a.fullName.trim() ? '— (required)' : null,
     email: !a.email.trim() ? '— (required)' : !isEmail(a.email) ? '— (invalid)' : null,
-    phone: !a.phone.trim() ? '— (required)' : !isPhone(a.phone) ? '— (invalid)' : null,
+    phone: !a.phone.trim() ? '— (required)' : !isValidE164Phone(a.phone) ? '— (invalid)' : null,
     company: !a.company.trim() ? '— (required)' : null,
     jobTitle: !a.jobTitle.trim() ? '— (required)' : null,
     ticket: !reg.ticketTypeId.value ? '— (required)' : null,
