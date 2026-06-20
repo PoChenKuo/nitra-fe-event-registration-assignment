@@ -582,3 +582,30 @@ We identified all native Heading tags inside the Vue templates and ensured they 
 - This ensures all heading tags maintain layout stability and align exactly with the layout gap specifications without being polluted by browser or Quasar default margins.
 
 **Verification:** Verified via `grep` that all `h1`-`h6` occurrences inside the workspace templates now correctly utilize the `mt-0 mb-0` utilities.
+
+## Tasks 15 - Fix WizardFooter goBack button styling
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Modify the `goBack` button in `WizardFooter.vue` to resolve style inconsistencies with the Figma design. The button should use an unelevated secondary button style with a background, border-radius, and specific text color, and should not contain a back arrow icon.
+
+Figma spec:
+- border-radius: `var(--border-radius-default, 0.625rem)`
+- background: `var(--components-button-secondary-bg-muted-rest, #E3E6E8)`
+- color: `var(--components-button-secondary-text-on-muted, rgba(0, 0, 0, 0.6))`
+- no icon.
+
+### Result / Decision
+
+#### Implementation — `src/components/WizardFooter.vue`
+- Changed the `goBack` button's styling in [WizardFooter.vue](file:///D:/startup/nitra-fe-event-registration-assignment/src/components/WizardFooter.vue) from `flat` to `unelevated`.
+- Removed `icon="arrow_back"` to match Figma design.
+- Replaced the text color class `text-neutral-muted` and applied inline style for `border-radius`, `background`, and `color` matching the Figma design variables and fallbacks.
+
+**Verification:** `yarn build` succeeds.
+

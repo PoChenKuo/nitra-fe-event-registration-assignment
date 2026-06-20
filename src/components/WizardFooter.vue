@@ -15,11 +15,11 @@ function onPrimary() {
   <div class="flex items-center justify-between h-[72px] px-[120px] bg-surface-l0">
     <q-btn
       v-if="!isFirst"
-      flat
+      unelevated
       no-caps
-      icon="arrow_back"
       label="Back"
-      class="text-neutral-muted text-md font-semibold"
+      class="text-md font-semibold px-[16px]"
+      style="border-radius: var(--border-radius-default, 0.625rem); background: var(--components-button-secondary-bg-muted-rest, #E3E6E8); color: var(--components-button-secondary-text-on-muted, rgba(0, 0, 0, 0.6));"
       @click="goBack"
     />
     <span v-else />
