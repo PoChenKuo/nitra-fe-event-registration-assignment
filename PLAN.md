@@ -772,6 +772,24 @@ Reference Figma design: https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitr
 #### Implementation — Correct Error Banner Positioning
 - **src/pages/steps/ReviewStep.vue**: Moved the `<ErrorBanner>` component declaration above the `<h2>` page title tag, matching the vertical positioning (y=40 vs y=183) shown in the Figma validation error mock layout (node `1076:904`).
 
+
+## Tasks 24 - Import and set Inter font globally
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Import the Inter variable font globally to match the Figma design's text weights and typography.
+
+### Result / Decision
+
+#### Implementation — Global Font Import
+- **index.html**: Added the Google Fonts link for the Inter font (`wght@400;500;600;700`).
+- **src/css/app.scss**: Set `font-family: 'Inter', sans-serif;` on the `body` selector to apply the font globally.
+
 **Verification:** `corepack yarn build` succeeds.
 
 
