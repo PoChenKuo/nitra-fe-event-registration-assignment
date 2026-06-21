@@ -755,3 +755,24 @@ On viewport widths below 480px, reduce the horizontal padding (`px`) of the tabs
 **Verification:** `corepack yarn build` succeeds.
 
 
+## Tasks 23 - Correct the positioning of validation error alerts
+### Status
+#### Done
+true
+#### Pending
+false
+#### Deprecated
+false
+### Description
+Correct the positioning of the validation error alerts in [ReviewStep.vue].
+Reference Figma design: https://www.figma.com/design/pvfYMvJjMiDfJwe6zDrPCZ/Nitra-FE-Assessment---v2--Copy-?node-id=1076-904&m=dev
+
+### Result / Decision
+
+#### Implementation — Correct Error Banner Positioning
+- **src/pages/steps/ReviewStep.vue**: Moved the `<ErrorBanner>` component declaration above the `<h2>` page title tag, matching the vertical positioning (y=40 vs y=183) shown in the Figma validation error mock layout (node `1076:904`).
+
+**Verification:** `corepack yarn build` succeeds.
+
+
+

@@ -83,9 +83,9 @@ const addonRows = computed(() => {
 
 <template>
   <section class="flex flex-col gap-[24px]">
+    <ErrorBanner v-if="showErrors && errorList.length" :errors="errorList" />
     <h2 class="text-h3 text-neutral mt-0 mb-0">Review Your Registration</h2>
 
-    <ErrorBanner v-if="showErrors && errorList.length" :errors="errorList" />
 
     <!-- Attendee -->
     <ReviewSection title="Attendee Information" :edit-step="STEP.ATTENDEE" :error="sectionError(STEP.ATTENDEE)">
